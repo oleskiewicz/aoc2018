@@ -1,0 +1,2 @@
+#!/bin/sh
+docker run --rm -ti --workdir=/src -v $(pwd):/src nimlang/nim:alpine nim c -r "$1"
