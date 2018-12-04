@@ -1,4 +1,4 @@
-#!/usr/bin/env julia
+#!/usr/bin/env dk 202a3fcc9519 julia
 
 function index_repeated(ids)
 	result = -1
