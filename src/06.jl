@@ -1,11 +1,11 @@
 #!/usr/bin/env dk 202a3fcc9519 julia
 using DelimitedFiles
 
-function read_points(f::String)
+function read_points(f::String)::Array{Int,2}
 	readdlm(f, ',', Int, '\n')
 end
 
-function build_grid(points)
+function build_grid(points::Array{Int,2})::Tuple{Array{Int64,2},Int64,Int64,Int64,Int64}
 	xmin, ymin = minimum(points, dims=1)
 	xmax, ymax = maximum(points, dims=1)
 	grid = zeros(Int, xmax-xmin+1, ymax-ymin+1)
@@ -15,7 +15,7 @@ function build_grid(points)
 	return grid, xmin, xmax, ymin, ymax
 end
 
-function select_points(points, xmin, xmax, ymin, ymax)
+function select_points(points::Array{Int,2}, xmin::Int, xmax::Int, ymin::Int, ymax::Int)::Array{Int}
 	findall(
 		(points[:,1] .!= xmin) .&
 		(points[:,2] .!= ymin) .&
@@ -23,11 +23,11 @@ function select_points(points, xmin, xmax, ymin, ymax)
 		(points[:,2] .!= ymax))
 end
 
-function manhattan_distance(p1::Array{Int}, p2::Array{Int})
+function manhattan_distance(p1::Array{Int}, p2::Array{Int})::Int
 		abs(p1[1] - p2[1]) + abs(p1[2] - p2[2])
 end
 
-function populate_grid!(grid, distances)
+function populate_grid!(grid::Array{Int,2}, distances::Array{Int,3})
 	for x in 1:size(grid, 1)
 		for y in 1:size(grid, 2)
 			closest_points = findall(d -> d == minimum(distances[x, y, :]), distances[x, y, :])
@@ -36,28 +36,35 @@ function populate_grid!(grid, distances)
 			end
 		end
 	end
-	return grid
 end
 
-function find_biggest_area(grid, selected_points)
-	[count(grid .== p) for p in selected_points] |> maximum
+function find_biggest_area(grid, selected_points)::Int
+	maximum([count(grid .== p) for p in selected_points])
 end
 
-points = read_points("./dat/06_test.txt")
+# Part 1
+points = read_points("./dat/06.txt")
 grid, xmin, xmax, ymin, ymax = build_grid(points)
+#= println(xmin) =#
+#= println(ymin) =#
+
 selected_points = select_points(points, xmin, xmax, ymin, ymax)
+#= for p in selected_points =#
+#=     println(p) =#
+#= end =#
+
 distances = [
-	manhattan_distance([x, y], points[p,:])
-		for x in xmin:xmax,
-	      y in ymin:ymax,
-	      p in 1:size(points, 1)
+manhattan_distance([x, y], points[p,:])
+for x in xmin:xmax, y in ymin:ymax, p in 1:size(points, 1)
 ]
 populate_grid!(grid, distances)
-a1 = find_biggest_area(grid, selected_points)
-
-println(a1)
-
-#= for x in 1:size(grid, 1) =#
-#= 	println(grid[x,:]) =#
+#= println("x,y,p") =#
+#= for x in 1:size(grid,1) =#
+#= for y in 1:size(grid,2) =#
+  #= println("$x,$y,$(grid[x,y])") =#
 #= end =#
+#= end =#
+
+area_1 = find_biggest_area(grid, selected_points)
+println(area_1)
 
