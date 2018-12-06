@@ -38,8 +38,16 @@ function populate_grid!(grid::Array{Int,2}, distances::Array{Int,3})
 	end
 end
 
-function find_biggest_area(grid, selected_points)::Int
+function find_biggest_area(grid::Array{Int,2}, selected_points::Array{Int})::Int
 	maximum([count(grid .== p) for p in selected_points])
+end
+
+function find_region_nearest(grid::Array{Int,2}, selected_points::Array{Int})::Int
+	count(
+		[sum(distances[x,y,:])
+		 for x in 1:size(grid,1), y in 1:size(grid,2)]
+		.< 10000
+	)
 end
 
 # Part 1
@@ -50,7 +58,7 @@ grid, xmin, xmax, ymin, ymax = build_grid(points)
 
 selected_points = select_points(points, xmin, xmax, ymin, ymax)
 #= for p in selected_points =#
-#=     println(p) =#
+#=		 println(p) =#
 #= end =#
 
 distances = [
@@ -61,10 +69,16 @@ populate_grid!(grid, distances)
 #= println("x,y,p") =#
 #= for x in 1:size(grid,1) =#
 #= for y in 1:size(grid,2) =#
-  #= println("$x,$y,$(grid[x,y])") =#
+	#= println("$x,$y,$(grid[x,y])") =#
 #= end =#
 #= end =#
 
 area_1 = find_biggest_area(grid, selected_points)
 println(area_1)
+
+# Part 2
+area_2 = find_region_nearest(grid, distances)
+println(area_2)
+
+# NOTE: https://github.com/KristofferC/NearestNeighbors.jl would be better
 
