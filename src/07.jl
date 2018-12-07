@@ -6,20 +6,21 @@ function find_prerequisites(table::Array{Char,2})::Array{Char}
 end
 
 function flatten_graph(table)
-	if size(table, 1) > 1
-		node = find_prerequisites(table)[1]
-		print(node)
-		flatten_graph(table[findall(x-> !(x == node), table[:,1]),:])
-	elseif size(table, 1) == 1
-		for node in table
-			print(node)
-		end
-	else
-	end
+  if size(table, 1) > 1
+    node = find_prerequisites(table)[1]
+    print(node)
+    flatten_graph(table[table[:,1] .!= node,:])
+  elseif size(table, 1) == 1
+    for node in table
+      print(node)
+    end
+  else
+  end
 end
 
 #= @assert flatten_graph(table) == "CABDFE" =#
 
 table = readdlm("./dat/07.csv", ',', Char, '\n')
-flatten_graph(table)
 
+# Part 1
+flatten_graph(table)
