@@ -28,6 +28,14 @@ func build(data: seq[int]): (Tree, seq[int]) =
 func sum(tree: Tree): int =
   tree.metadata.sum + tree.children.map(child => sum(child)).sum
 
+iterator value(tree: Tree): int =
+  if tree.children.len == 0:
+    yield tree.metadata.sum
+  else:
+    for i in tree.metadata:
+      if (i-1) in 0..<tree.children.len:
+        yield value(tree.children[i-1])
+
 when isMainModule:
   var (tree, _) = paramStr(1).read.build
   echo tree.sum
