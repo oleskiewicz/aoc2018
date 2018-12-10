@@ -6,10 +6,13 @@ function read_data(f::String)::Array{Int,2}
 end
 
 function evolve!(data::Array{Int,2})
+  seconds = 0
   while (maximum(data[:,2]) - minimum(data[:,2])) > 9
+    seconds += 1
     data[:,1] += data[:,3]
     data[:,2] += data[:,4]
   end
+  println(seconds)
 end
 
 function transform!(data::Array{Int,2})
