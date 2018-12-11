@@ -29,7 +29,7 @@ function find_max_fuel_cell_size(grid::Array{Int,2})
     push!(cell_xs, max_index[1])
     push!(cell_ys, max_index[2])
   end
-  i = findmax(cell_maxima)[2]
+  i = argmax(cell_maxima)
   return cell_xs[i], cell_ys[i], cell_sizes[i]
 end
 
