@@ -30,8 +30,10 @@ function evolve(current::Set{Int}, rules::Dict{String,String}, steps::Int)::Set{
   return next
 end
 
-plants = "#..#.#..##......###...###"
-rules = read_rules("./dat/12_test.txt")
+#= plants = "#..#.#..##......###...###" =#
+#= rules = read_rules("./dat/12_test.txt") =#
+plants = "##..#.#.#..##..#..##..##..#.#....#.....##.#########...#.#..#..#....#.###.###....#..........###.#.#.."
+rules = read_rules("./dat/12.txt")
 pots = Set(i - 1 for (i, c) in enumerate(plants) if c == '#')
 
 # Part 1
