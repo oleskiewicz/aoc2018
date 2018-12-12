@@ -37,5 +37,12 @@ rules = read_rules("./dat/12.txt")
 pots = Set(i - 1 for (i, c) in enumerate(plants) if c == '#')
 
 # Part 1
-evolve(pots, rules, 20) |> sum |> println
+print("Part 1: ")
+println(evolve(pots, rules, 20) |> sum)
+
+# Part 2
+println("Part 2:")
+for t in [500, 5_000, 50_000, 500_000]
+  println(t, ": ", evolve(pots, rules, t) |> sum)
+end
 
