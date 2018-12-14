@@ -14,7 +14,7 @@ end
 function evolve(current::Set{Int}, rules::Dict{String,String})::Set{Int}
   next = Set{Int}()
   for i in minimum(current)-2:maximum(current)+2
-    window = join([k + i in current ? '#' : '.' for k in [-2, -1, 0, 1, 2]], "")
+    window = join([k + i in current ? '#' : '.' for k in -2:2], "")
     if haskey(rules, window)
       push!(next, i)
     end
